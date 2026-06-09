@@ -171,12 +171,12 @@ class _BarbeariaCard extends StatelessWidget {
                 width: 64,
                 height: 64,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE8EAF6),
+                  color: barbearia.cor.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(
-                  Icons.content_cut,
-                  color: Color(0xFF1A237E),
+                child: Icon(
+                  barbearia.icone,
+                  color: barbearia.cor,
                   size: 32,
                 ),
               ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/agendamento_provider.dart';
+import '../providers/tema_provider.dart';
 import 'login_screen.dart';
 
 class PerfilScreen extends StatefulWidget {
@@ -66,8 +67,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Sair',
-                style: TextStyle(color: Colors.red)),
+            child: const Text('Sair', style: TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -88,6 +88,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
     final usuario = auth.usuario;
+    final tema = context.watch<TemaProvider>();
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -179,7 +180,44 @@ class _PerfilScreenState extends State<PerfilScreen> {
               _infoCard(
                   Icons.phone_outlined, 'Telefone', usuario?.telefone ?? ''),
             ],
-            const SizedBox(height: 32),
+            const SizedBox(height: 24),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        tema.modoEscuro
+                            ? Icons.dark_mode
+                            : Icons.light_mode,
+                        color: const Color(0xFF1A237E),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        tema.modoEscuro ? 'Modo Escuro' : 'Modo Claro',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Switch(
+                    value: tema.modoEscuro,
+                    onChanged: (_) => tema.alternarTema(),
+                    activeColor: const Color(0xFF1A237E),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
             OutlinedButton.icon(
               onPressed: _logout,
               icon: const Icon(Icons.logout, color: Colors.red),
@@ -206,8 +244,9 @@ class _PerfilScreenState extends State<PerfilScreen> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFF5F5F5),
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade300),
       ),
       child: Row(
         children: [
